@@ -1,9 +1,9 @@
 package io.springbatch.springbatch.batch.job.file;
 
-import io.springbatch.springbatch.batch.chunk.processor.FileItemProcessor;
 import io.springbatch.springbatch.batch.domain.Product;
 import io.springbatch.springbatch.batch.domain.ProductVO;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -29,6 +29,7 @@ public class FileJobConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
+    private final ModelMapper mapper;
 
     @Bean
     public Job fileJob() {
@@ -63,7 +64,7 @@ public class FileJobConfiguration {
 
     @Bean
     public ItemProcessor<ProductVO, Product> fileItemProcessor() {
-        return new FileItemProcessor();
+        return product -> mapper.map(product, Product.class);
     }
 
     @Bean
